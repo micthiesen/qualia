@@ -1,0 +1,33 @@
+{
+  "operators": [
+    {
+      "id": "events",
+      "kind": "music-events",
+      "outputs": [{ "name": "onsets", "type": "event" }]
+    },
+    {
+      "id": "lattice",
+      "kind": "elastic-lattice",
+      "inputs": [
+        { "name": "impulses", "type": "event" },
+        { "name": "resistance", "type": "field" }
+      ],
+      "outputs": [{ "name": "ruptures", "type": "entity-set" }]
+    },
+    {
+      "id": "fragments",
+      "kind": "fragment-transport",
+      "inputs": [{ "name": "seeds", "type": "entity-set" }],
+      "outputs": [{ "name": "trails", "type": "field" }]
+    }
+  ],
+  "edges": [
+    { "from": { "node": "events", "port": "onsets" }, "to": { "node": "lattice", "port": "impulses" } },
+    { "from": { "node": "lattice", "port": "ruptures" }, "to": { "node": "fragments", "port": "seeds" } },
+    {
+      "from": { "node": "fragments", "port": "trails" },
+      "to": { "node": "lattice", "port": "resistance" },
+      "timing": "delayed"
+    }
+  ]
+}
